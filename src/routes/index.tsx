@@ -1,11 +1,11 @@
-import { component$ } from '@builder.io/qwik';
-import type { DocumentHead } from '@builder.io/qwik-city';
-import { Link } from '@builder.io/qwik-city';
+import { component$ } from "@builder.io/qwik";
+import type { DocumentHead } from "@builder.io/qwik-city";
+import { Link } from "@builder.io/qwik-city";
 
 export default component$(() => {
   return (
     <div>
-      <h1>
+      <h1 className="text-[2em]">
         Welcome to Qwik <span class="lightning">⚡️</span>
       </h1>
 
@@ -129,5 +129,5 @@ export default component$(() => {
 });
 
 export const head: DocumentHead = {
-  title: 'Welcome to Qwik',
+  title: "Welcome to Qwik",
 };
