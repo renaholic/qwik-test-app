@@ -1,5 +1,5 @@
 {
-  "name": "my-qwik-basic-starter",
+  "name": "qwik-fucking-around",
   "description": "Recommended for your first Qwik app",
   "engines": {
     "node": ">=15.0.0"
@@ -11,7 +11,7 @@
     "build.preview": "vite build --ssr src/entry.preview.tsx",
     "build.server": "vite build --ssr src/entry.express.tsx",
     "build.types": "tsc --incremental --noEmit",
-    "dev": "vite --mode ssr",
+    "dev": "vite --mode ssr --host",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
