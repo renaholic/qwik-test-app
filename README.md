@@ -1,3 +1,20 @@
+# Tested Library / Functionality
+## UI
+- [x] Tailwind
+- [] SCSS / Emotion
+- [] Storybook
+- [] jest(?)
+## State management
+- [] zustand/vanilla (possible mess up qwik philosophy?)
+## Maintenance
+- [x] Husky
+## Backend Connection
+- [] trpc
+- [] Firebase
+    - [] Auth
+    - [] Hosting
+    - [] Functions
+
 # Qwik App ⚡️
 
 - [Qwik Docs](https://qwik.builder.io/)
