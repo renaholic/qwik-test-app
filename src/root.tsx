@@ -1,8 +1,15 @@
-import { component$ } from '@builder.io/qwik';
-import { QwikCity, RouterOutlet, ServiceWorkerRegister } from '@builder.io/qwik-city';
-import { RouterHead } from './components/router-head/router-head';
+import { component$ } from "@builder.io/qwik";
+import {
+  QwikCity,
+  QwikCityProvider,
+  RouterOutlet,
+  ServiceWorkerRegister,
+} from "@builder.io/qwik-city";
+import { QwikSpeak } from "qwik-speak";
+import { RouterHead } from "./components/router-head/router-head";
 
-import './global.css';
+import "./global.css";
+import { config, translationFn } from "./speak-config";
 
 export default component$(() => {
   /**
@@ -12,15 +19,29 @@ export default component$(() => {
    * Dont remove the `<head>` and `<body>` elements.
    */
   return (
-    <QwikCity>
-      <head>
-        <meta charSet="utf-8" />
-        <RouterHead />
-      </head>
-      <body lang="en">
-        <RouterOutlet />
-        <ServiceWorkerRegister />
-      </body>
-    </QwikCity>
+    // <QwikCity>
+    //   <head>
+    //     <meta charSet="utf-8" />
+    //     <RouterHead />
+    //   </head>
+    //   <body lang="en">
+    //     <RouterOutlet />
+    //     <ServiceWorkerRegister />
+    //   </body>
+    // </QwikCity>
+
+    <QwikSpeak config={config} translationFn={translationFn}>
+      <QwikCityProvider>
+        <head>
+          <meta charSet="utf-8" />
+          {/* <link rel='manifest' href='/manifest.json' /> */}
+          <RouterHead />
+        </head>
+        <body lang="en">
+          <RouterOutlet />
+          <ServiceWorkerRegister />
+        </body>
+      </QwikCityProvider>
+    </QwikSpeak>
   );
 });
