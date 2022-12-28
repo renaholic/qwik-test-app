@@ -13,6 +13,7 @@ export default defineConfig(() => {
         devOptions: {
           enabled: true,
         },
+        injectRegister: null,
         includeAssets: ['favicon.svg'],
         manifest: {
           name: 'Qwik Fucking Around',
@@ -24,7 +25,7 @@ export default defineConfig(() => {
               src: 'favicon.svg',
               sizes: '48x48 72x72 96x96 128x128 256x256 512x512',
               type: 'image/svg+xml',
-              purpose: 'any',
+              purpose: 'any maskable',
             },
           ],
         },
