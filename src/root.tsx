@@ -7,6 +7,7 @@ import {
 import { QwikSpeak } from 'qwik-speak'
 import { RouterHead } from './components/router-head/router-head'
 import { QwikPartytown } from './components/partytown/partytown'
+
 import './global.css'
 import { config, translationFn } from './speak-config'
 
@@ -44,6 +45,7 @@ export default component$(() => {
           />
           <link rel="mask-icon" href="/mask-icon.svg" color="#FFFFFF" />
           <meta name="theme-color" content="#ffffff" />
+
           <meta charSet="utf-8" />
           <link rel="manifest" href="/manifest.webmanifest" />
           <RouterHead />
