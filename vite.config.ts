@@ -5,6 +5,8 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 import { qwikSpeakInline } from 'qwik-speak/inline'
 import { VitePWA } from 'vite-plugin-pwa'
 import { qwikReact } from '@builder.io/qwik-react/vite'
+import { partytownVite } from '@builder.io/partytown/utils'
+import { join } from 'path'
 
 export default defineConfig(() => {
   return {
@@ -39,6 +41,7 @@ export default defineConfig(() => {
       }),
       tsconfigPaths(),
       qwikReact(),
+      partytownVite({ dest: join(__dirname, 'public', '~partytown') }),
     ],
   }
 })
