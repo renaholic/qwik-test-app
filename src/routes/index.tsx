@@ -126,6 +126,10 @@ export const Home = component$(() => {
       <Link class="mindblow" href="/flower">
         Blow my mind 🤯
       </Link>
+
+      <Link class="mindblow" href="/login">
+        Login
+      </Link>
     </div>
   )
 })
