@@ -9,8 +9,9 @@
     "build": "qwik build",
     "build.client": "vite build",
     "build.preview": "vite build --ssr src/entry.preview.tsx",
-    "build.server": "vite build --ssr src/entry.express.tsx",
+    "build.server": "vite build -c adaptors/cloudflare-pages/vite.config.ts",
     "build.types": "tsc --incremental --noEmit",
+    "deploy": "wrangler pages dev ./dist",
     "dev": "vite --mode ssr --host",
     "dev.debug": "node --inspect-brk ./node_modules/vite/bin/vite.js --mode ssr --force",
     "fmt": "prettier --write .",
@@ -18,10 +19,10 @@
     "lint": "eslint \"src/**/*.ts*\"",
     "prepare": "husky install",
     "preview": "qwik build preview && vite preview --open",
+    "qwik-speak-extract": "qwik-speak-extract --supportedLangs=en-US,zh-HK",
     "serve": "node server/entry.express",
     "start": "vite --open --mode ssr",
-    "qwik": "qwik",
-    "qwik-speak-extract": "qwik-speak-extract --supportedLangs=en-US,zh-HK"
+    "qwik": "qwik"
   },
   "devDependencies": {
     "@builder.io/qwik": "0.16.1",
@@ -44,7 +45,8 @@
     "tailwindcss": "^3.1.8",
     "typescript": "4.9.4",
     "vite": "3.2.4",
-    "vite-tsconfig-paths": "3.6.0"
+    "vite-tsconfig-paths": "3.6.0",
+    "wrangler": "latest"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.3"
