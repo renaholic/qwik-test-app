@@ -1,13 +1,13 @@
-import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
-import { Link } from "@builder.io/qwik-city";
-import { $translate as t, Speak } from "qwik-speak";
+import { component$ } from '@builder.io/qwik'
+import type { DocumentHead } from '@builder.io/qwik-city'
+import { Link } from '@builder.io/qwik-city'
+import { $translate as t, Speak } from 'qwik-speak'
 
 export const Home = component$(() => {
   return (
     <div>
       <h1 class="text-[2em]">
-        {t("home.greetings@@Welcome to Qwik")}{" "}
+        {t('home.greetings@@Welcome to Qwik')}{' '}
         <span class="lightning">⚡️</span>
       </h1>
 
@@ -127,17 +127,17 @@ export const Home = component$(() => {
         Blow my mind 🤯
       </Link>
     </div>
-  );
-});
+  )
+})
 
 export default component$(() => {
   return (
-    <Speak assets={["home"]}>
+    <Speak assets={['home']}>
       <Home />
     </Speak>
-  );
-});
+  )
+})
 
 export const head: DocumentHead = {
-  title: "Welcome to Qwik",
-};
+  title: 'Welcome to Qwik',
+}
