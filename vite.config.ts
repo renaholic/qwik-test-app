@@ -41,7 +41,7 @@ export default defineConfig(() => {
       }),
       tsconfigPaths(),
       qwikReact(),
-      partytownVite({ dest: join(__dirname, 'public', '~partytown') }),
+      partytownVite({ dest: join(__dirname, 'dist', '~partytown') }),
     ],
   }
 })
