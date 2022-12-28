@@ -1,9 +1,10 @@
-import { defineConfig } from 'vite';
-import { qwikVite } from '@builder.io/qwik/optimizer';
-import { qwikCity } from '@builder.io/qwik-city/vite';
-import tsconfigPaths from 'vite-tsconfig-paths';
-import { qwikSpeakInline } from 'qwik-speak/inline';
-import { VitePWA } from 'vite-plugin-pwa';
+import { defineConfig } from 'vite'
+import { qwikVite } from '@builder.io/qwik/optimizer'
+import { qwikCity } from '@builder.io/qwik-city/vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import { qwikSpeakInline } from 'qwik-speak/inline'
+import { VitePWA } from 'vite-plugin-pwa'
+import { qwikReact } from '@builder.io/qwik-react/vite'
 
 export default defineConfig(() => {
   return {
@@ -37,6 +38,7 @@ export default defineConfig(() => {
         defaultLang: 'en-US',
       }),
       tsconfigPaths(),
+      qwikReact(),
     ],
-  };
-});
+  }
+})
