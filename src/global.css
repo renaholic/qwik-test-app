@@ -17,10 +17,18 @@
   --qwik-dark-purple: #713fc2;
 }
 
-html,
-body {
-  height: 100%;
+html {
+  height: 100vh;
   overflow: hidden;
+}
+
+body {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
 }
 
 html {
