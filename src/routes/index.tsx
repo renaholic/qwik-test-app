@@ -1,12 +1,12 @@
 import { component$ } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { Link } from "@builder.io/qwik-city";
-import { $translate as t, $plural as p, Speak } from "qwik-speak";
+import { $translate as t, Speak } from "qwik-speak";
 
 export const Home = component$(() => {
   return (
     <div>
-      <h1 className="text-[2em]">
+      <h1 class="text-[2em]">
         {t("home.greetings@@Welcome to Qwik")}{" "}
         <span class="lightning">⚡️</span>
       </h1>

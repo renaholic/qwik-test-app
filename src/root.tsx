@@ -1,9 +1,8 @@
 import { component$ } from "@builder.io/qwik";
 import {
-  QwikCity,
   QwikCityProvider,
   RouterOutlet,
-  ServiceWorkerRegister,
+  ServiceWorkerRegister
 } from "@builder.io/qwik-city";
 import { QwikSpeak } from "qwik-speak";
 import { RouterHead } from "./components/router-head/router-head";

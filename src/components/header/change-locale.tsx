@@ -1,5 +1,5 @@
 import { component$ } from "@builder.io/qwik";
-import { changeLocale, $translate as t, useSpeakContext } from "qwik-speak";
+import { changeLocale, useSpeakContext } from "qwik-speak";
 
 export const ChangeLocale = component$(() => {
   const ctx = useSpeakContext();
