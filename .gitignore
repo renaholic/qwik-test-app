@@ -33,6 +33,11 @@ lerna-debug.log*
 *.sln
 *.sw?
 
+.env*
+
 # Yarn
 .yarn/*
 !.yarn/releases
+
+# Cloudflare
+functions/**/*.js
