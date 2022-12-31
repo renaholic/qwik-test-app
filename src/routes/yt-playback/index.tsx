@@ -188,6 +188,10 @@ export default component$(() => {
 export const head: DocumentHead = {
   title: 'Youtube Playback Calculator',
   meta: [
-    { name: 'description', content: 'Calculate when to play a youtube video' },
+    {
+      name: 'description',
+      content:
+        'Calculate when to play the video at the (nearly) exact time you want',
+    },
   ],
 }
