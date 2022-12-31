@@ -165,7 +165,7 @@ export default component$(() => {
                     .format('mm:ss')} seconds ahead instead`
                 } else {
                   store.prompt = `Video will start at ${timeOffset.format(
-                    'YYYY-MM-DDTHH:mm:ss'
+                    'YYYY-MM-DD HH:mm:ss'
                   )}`
                 }
                 store.timer = setTimeout(async () => {
