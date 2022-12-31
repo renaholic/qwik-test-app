@@ -1,14 +1,17 @@
 import {
   component$,
+  NoSerialize,
   noSerialize,
   useClientEffect$,
   useSignal,
   useStore,
 } from '@builder.io/qwik'
+import { DocumentHead } from '@builder.io/qwik-city'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import YouTubePlayer from 'youtube-player'
-import type { DocumentHead } from '@builder.io/qwik-city'
+
+dayjs.extend(duration)
 
 export const isDev = import.meta.env.DEV
 
@@ -16,8 +19,6 @@ export const presets = [
   { videoID: 'hAqqAwhfet8', videoTimestamp: 40, label: 'Unicorn' },
   { videoID: 'M2cckDmNLMI', videoTimestamp: 130, label: 'Kick Back' },
 ]
-
-dayjs.extend(duration)
 
 export const Clock = component$(() => {
   const date = useSignal(new Date())
@@ -32,30 +33,61 @@ export const Clock = component$(() => {
       const timer = timeout()
       return () => clearTimeout(timer)
     },
-    { eagerness: 'load' }
+    { eagerness: 'idle' }
   )
 
   return <>{dayjs(date.value).format('YYYY-MM-DD HH:mm:ss')}</>
 })
 
 export default component$(() => {
-  const store = useStore<any>({
+  // form
+  const store = useStore({
     videoID: '',
     videoTimestamp: 0,
     playAt: isDev
       ? dayjs().add(45, 'seconds').format('YYYY-MM-DDTHH:mm:ss')
       : dayjs().add(1, 'year').startOf('year').format('YYYY-MM-DDTHH:mm:ss'),
     prompt: '',
-    player: null,
-    timer: null,
   })
 
+  const _store = useStore<{
+    player: NoSerialize<ReturnType<typeof YouTubePlayer>>
+    timer: NoSerialize<NodeJS.Timeout>
+  }>({
+    player: undefined,
+    timer: undefined,
+  })
+
+  const ref = useSignal<Element | undefined>(undefined)
+
+  // clean up
   useClientEffect$(() => {
     return () => {
-      const { player, timer } = store
+      const { player, timer } = _store
       if (timer) clearInterval(timer)
       if (player) player.destroy()
     }
+  })
+
+  // preload player
+  useClientEffect$(async ({ track }) => {
+    track(() => ref)
+    track(() => _store.player)
+
+    if (!ref) return
+    if (_store.player) return
+
+    _store.player = noSerialize(
+      YouTubePlayer('player', {
+        playerVars: {
+          autoplay: 0,
+          origin: isDev
+            ? 'http://localhost:5173'
+            : 'https://qwik.alepholic.dev',
+          enablejsapi: 1,
+        },
+      })
+    )
   })
 
   return (
@@ -107,6 +139,7 @@ export default component$(() => {
             second played at
             <input
               type="datetime-local"
+              step="1"
               name="playAt"
               value={store.playAt}
               onInput$={(ev) =>
@@ -118,60 +151,44 @@ export default component$(() => {
               class="ml-3 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
               onClick$={async () => {
                 const { videoID, videoTimestamp, playAt } = store
-                if (!videoID || !videoTimestamp || !playAt) return
-                const timeOffset = dayjs(new Date(store.playAt)).subtract(
-                  store.videoTimestamp,
+
+                // Datetime that the video should be played at
+                const timeOffset = dayjs(new Date(playAt)).subtract(
+                  videoTimestamp,
                   'seconds'
                 )
-                const timeDiff = timeOffset.diff(dayjs(), 'milliseconds')
 
-                if (store.timer) clearTimeout(store.timer)
+                // the millisecond until the timeOffset
+                const millDiff = timeOffset.diff(dayjs(), 'milliseconds')
+                const secDiff = Math.floor(millDiff / 1000)
 
-                if (!store.player) {
-                  store.player = noSerialize(
-                    YouTubePlayer('player', {
-                      videoId: videoID,
-                      playerVars: {
-                        start:
-                          timeDiff <= 0
-                            ? Math.abs(Math.floor(timeDiff / 1000))
-                            : 0,
-                        autoplay: timeDiff <= 0 ? 1 : 0,
-                        origin: isDev
-                          ? 'http://localhost:5173'
-                          : 'https://qwik.alepholic.dev',
-                        enablejsapi: 1,
-                      },
-                    })
+                if (_store.player) {
+                  await _store.player.loadVideoById(
+                    videoID,
+                    millDiff <= 0 ? Math.abs(Math.floor(millDiff / 1000)) : 0
                   )
-                } else {
-                  await store.player.loadVideoById({
-                    videoId: videoID,
-                    startSeconds:
-                      timeDiff <= 0 ? Math.abs(Math.floor(timeDiff / 1000)) : 0,
-                  })
+                  await _store.player.pauseVideo()
                 }
 
-                if (
-                  timeDiff < 0 &&
-                  Math.abs(timeDiff / 1000) > store.videoTimestamp
-                ) {
+                if (secDiff < 0 && Math.abs(secDiff) > store.videoTimestamp) {
                   store.prompt = `The ship has completely sailed`
                   return
-                }
-                if (timeDiff < 0) {
+                } else if (secDiff < 0) {
                   store.prompt = `The 00:00 ship has sailed, starting at ${dayjs
-                    .duration(Math.floor(Math.abs(timeDiff / 1000)), 'seconds')
-                    .format('mm:ss')} seconds ahead instead`
+                    .duration(Math.floor(Math.abs(secDiff)), 'seconds')
+                    .format('mm:ss')} seconds instead`
                 } else {
                   store.prompt = `Video will start at ${timeOffset.format(
                     'YYYY-MM-DD HH:mm:ss'
                   )}`
                 }
-                store.timer = setTimeout(async () => {
-                  await store.player.playVideo()
-                  clearTimeout(store.timer)
-                }, timeDiff)
+
+                _store.timer = noSerialize(
+                  setTimeout(async () => {
+                    if (_store.player) await _store.player.playVideo()
+                    if (_store.timer) clearTimeout(_store.timer)
+                  }, millDiff)
+                )
               }}
             >
               GO
@@ -179,7 +196,7 @@ export default component$(() => {
           </div>
         </div>
         <p class="text-center">{store.prompt}</p>
-        <div id="player" class="self-center" />
+        <div id="player" class="self-center" ref={ref} />
       </div>
     </div>
   )
