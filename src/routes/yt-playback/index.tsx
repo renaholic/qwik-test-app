@@ -7,6 +7,7 @@ import {
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 import YouTubePlayer from 'youtube-player'
+import type { DocumentHead } from '@builder.io/qwik-city'
 
 export const isDev = import.meta.env.DEV
 
@@ -157,3 +158,7 @@ export default component$(() => {
     </div>
   )
 })
+
+export const head: DocumentHead = {
+  title: 'Youtube Playback Calculator',
+}
