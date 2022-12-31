@@ -26,6 +26,8 @@ export const Clock = component$(() => {
 
   useClientEffect$(
     () => {
+      date.value = new Date()
+
       const timeout = () =>
         setTimeout(() => {
           date.value = new Date()
@@ -61,8 +63,12 @@ export default component$(() => {
 
   const ref = useSignal<Element | undefined>(undefined)
 
-  // clean up
   useClientEffect$(() => {
+    store.playAt = isDev
+      ? dayjs().add(45, 'seconds').format('YYYY-MM-DDTHH:mm:ss')
+      : dayjs().add(1, 'year').startOf('year').format('YYYY-MM-DDTHH:mm:ss')
+
+    // clean up
     return () => {
       const { player, timer } = _store
       if (timer) clearInterval(timer)
