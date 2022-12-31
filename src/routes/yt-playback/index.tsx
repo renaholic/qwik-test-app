@@ -38,71 +38,14 @@ export const Clock = component$(() => {
 })
 
 export default component$(() => {
-  const location = useLocation()
-  const { videoID, videoTimestamp, playAt } = location.query as {
-    videoID: string
-    videoTimestamp: string
-    playAt: string
-  }
-
   const store = useStore({
-    videoID: videoID || '',
-    videoTimestamp:
-      (isNaN(parseInt(videoTimestamp)) ? 0 : parseInt(videoTimestamp)) || 0,
-    playAt:
-      playAt ||
-      (isDev
-        ? dayjs().add(45, 'seconds').format('YYYY-MM-DDTHH:mm:ss')
-        : dayjs().add(1, 'year').startOf('year').format('YYYY-MM-DDTHH:mm:ss')),
+    videoID: '',
+    videoTimestamp: 0,
+    playAt: isDev
+      ? dayjs().add(45, 'seconds').format('YYYY-MM-DDTHH:mm:ss')
+      : dayjs().add(1, 'year').startOf('year').format('YYYY-MM-DDTHH:mm:ss'),
     prompt: '',
   })
-
-  // useClientEffect$(() => {
-  //   const { videoID, videoTimestamp, playAt } = store
-  //   console.log({ videoID, videoTimestamp, playAt })
-
-  //   if (!videoID || !videoTimestamp || !playAt) return
-
-  //   const timeOffset = dayjs(new Date(store.playAt)).subtract(
-  //     store.videoTimestamp,
-  //     'seconds'
-  //   )
-  //   const timeDiff = timeOffset.diff(dayjs(), 'milliseconds')
-  //   const player = YouTubePlayer('player', {
-  //     videoId: videoID,
-
-  //     playerVars: {
-  //       start: timeDiff <= 0 ? Math.abs(Math.floor(timeDiff / 1000)) : 0,
-  //       autoplay: timeDiff <= 0 ? 1 : 0,
-  //       origin: isDev ? 'http://localhost:5173' : 'https://qwik.alepholic.dev',
-  //       enablejsapi: 1,
-  //     },
-  //   })
-
-  //   if (timeDiff < 0 && Math.abs(timeDiff / 1000) > store.videoTimestamp) {
-  //     store.prompt = `The ship has completely sailed`
-  //     return
-  //   }
-
-  //   if (timeDiff < 0) {
-  //     store.prompt = `The 00:00 ship has sailed, starting at ${dayjs
-  //       .duration(Math.floor(Math.abs(timeDiff / 1000)), 'seconds')
-  //       .format('mm:ss')} seconds ahead instead`
-  //   } else {
-  //     store.prompt = `Video will start at ${timeOffset.format(
-  //       'YYYY-MM-DDTHH:mm:ss'
-  //     )}`
-  //   }
-
-  //   const timer = setTimeout(async () => {
-  //     await player.playVideo()
-  //   }, timeDiff)
-
-  //   return () => {
-  //     player && player.destroy()
-  //     timer && clearTimeout(timer)
-  //   }
-  // })
 
   return (
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -201,6 +144,7 @@ export default component$(() => {
                 }
                 const timer = setTimeout(async () => {
                   await player.playVideo()
+                  clearTimeout(timer)
                 }, timeDiff)
               }}
             >
