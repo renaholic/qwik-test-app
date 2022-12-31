@@ -18,6 +18,7 @@ export const isDev = import.meta.env.DEV
 export const presets = [
   { videoID: 'hAqqAwhfet8', videoTimestamp: 40, label: 'Unicorn' },
   { videoID: 'M2cckDmNLMI', videoTimestamp: 130, label: 'Kick Back' },
+  { videoID: 'T9rMDOkPiRY', videoTimestamp: 92, label: 'Daisuke' },
 ]
 
 export const Clock = component$(() => {
