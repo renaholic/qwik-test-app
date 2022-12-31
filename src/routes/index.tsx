@@ -123,13 +123,19 @@ export const Home = component$(() => {
           </a>
         </li>
       </ul>
-      <Link class="mindblow" href="/flower">
-        Blow my mind 🤯
-      </Link>
+      <div class="flex flex-col gap-3">
+        <Link class="mindblow" href="/flower">
+          Blow my mind 🤯
+        </Link>
 
-      <Link class="mindblow" href="/login">
-        Login
-      </Link>
+        <Link class="mindblow" href="/yt-playback">
+          Youtube Playback Calculator
+        </Link>
+
+        <Link class="mindblow" href="/login">
+          Login
+        </Link>
+      </div>
     </div>
   )
 })
