@@ -6,7 +6,6 @@ import {
 } from '@builder.io/qwik-city'
 import { QwikSpeak } from 'qwik-speak'
 import { RouterHead } from './components/router-head/router-head'
-import { QwikPartytown } from './components/partytown/partytown'
 
 import './global.css'
 import { config, translationFn } from './speak-config'
@@ -33,11 +32,11 @@ export default component$(() => {
     <QwikSpeak config={config} translationFn={translationFn}>
       <QwikCityProvider>
         <head>
-          <QwikPartytown forward={['dataLayer.push']} />
+          {/* <QwikPartytown forward={['dataLayer.push']} /> */}
           <meta name="viewport" content="width=device-width,initial-scale=1" />
           <meta name="description" content="Messing around qwik" />
-          <link rel="icon" href="/favicon.ico" />
-          <script src="/registerSW.js" />
+          <link rel="icon" href="/favicon.svg" />
+          {/* <script src="/registerSW.js" /> */}
           <link
             rel="apple-touch-icon"
             href="/apple-touch-icon.png"
