@@ -4,10 +4,9 @@ import {
   useSignal,
   useStore,
 } from '@builder.io/qwik'
-import { useLocation } from '@builder.io/qwik-city'
 import dayjs from 'dayjs'
-import YouTubePlayer from 'youtube-player'
 import duration from 'dayjs/plugin/duration'
+import YouTubePlayer from 'youtube-player'
 
 export const isDev = import.meta.env.DEV
 
