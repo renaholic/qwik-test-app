@@ -57,56 +57,57 @@ export default component$(() => {
     prompt: '',
   })
 
-  useClientEffect$(() => {
-    const { videoID, videoTimestamp, playAt } = store
+  // useClientEffect$(() => {
+  //   const { videoID, videoTimestamp, playAt } = store
+  //   console.log({ videoID, videoTimestamp, playAt })
 
-    if (!videoID || !videoTimestamp || !playAt) return
+  //   if (!videoID || !videoTimestamp || !playAt) return
 
-    const timeOffset = dayjs(new Date(store.playAt)).subtract(
-      store.videoTimestamp,
-      'seconds'
-    )
-    const timeDiff = timeOffset.diff(dayjs(), 'milliseconds')
-    const player = YouTubePlayer('player', {
-      videoId: videoID,
+  //   const timeOffset = dayjs(new Date(store.playAt)).subtract(
+  //     store.videoTimestamp,
+  //     'seconds'
+  //   )
+  //   const timeDiff = timeOffset.diff(dayjs(), 'milliseconds')
+  //   const player = YouTubePlayer('player', {
+  //     videoId: videoID,
 
-      playerVars: {
-        start: timeDiff <= 0 ? Math.abs(Math.floor(timeDiff / 1000)) : 0,
-        autoplay: timeDiff <= 0 ? 1 : 0,
-        origin: isDev ? 'http://localhost:5173' : 'https://qwik.alepholic.dev',
-        enablejsapi: 1,
-      },
-    })
+  //     playerVars: {
+  //       start: timeDiff <= 0 ? Math.abs(Math.floor(timeDiff / 1000)) : 0,
+  //       autoplay: timeDiff <= 0 ? 1 : 0,
+  //       origin: isDev ? 'http://localhost:5173' : 'https://qwik.alepholic.dev',
+  //       enablejsapi: 1,
+  //     },
+  //   })
 
-    if (timeDiff < 0 && Math.abs(timeDiff / 1000) > store.videoTimestamp) {
-      store.prompt = `The ship has completely sailed`
-      return
-    }
+  //   if (timeDiff < 0 && Math.abs(timeDiff / 1000) > store.videoTimestamp) {
+  //     store.prompt = `The ship has completely sailed`
+  //     return
+  //   }
 
-    if (timeDiff < 0) {
-      store.prompt = `The 00:00 ship has sailed, starting at ${dayjs
-        .duration(Math.floor(Math.abs(timeDiff / 1000)), 'seconds')
-        .format('mm:ss')} seconds ahead instead`
-    } else {
-      store.prompt = `Video will start at ${timeOffset.format(
-        'YYYY-MM-DDTHH:mm:ss'
-      )}`
-    }
+  //   if (timeDiff < 0) {
+  //     store.prompt = `The 00:00 ship has sailed, starting at ${dayjs
+  //       .duration(Math.floor(Math.abs(timeDiff / 1000)), 'seconds')
+  //       .format('mm:ss')} seconds ahead instead`
+  //   } else {
+  //     store.prompt = `Video will start at ${timeOffset.format(
+  //       'YYYY-MM-DDTHH:mm:ss'
+  //     )}`
+  //   }
 
-    const timer = setTimeout(async () => {
-      await player.playVideo()
-    }, timeDiff)
+  //   const timer = setTimeout(async () => {
+  //     await player.playVideo()
+  //   }, timeDiff)
 
-    return () => {
-      player && player.destroy()
-      timer && clearTimeout(timer)
-    }
-  })
+  //   return () => {
+  //     player && player.destroy()
+  //     timer && clearTimeout(timer)
+  //   }
+  // })
 
   return (
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto flex max-w-3xl flex-col gap-3">
-        <form method="get" action="." class="flex flex-col gap-3">
+        <div class="flex flex-col gap-3">
           <div>
             Now is <Clock />
           </div>
@@ -159,13 +160,54 @@ export default component$(() => {
               }
             />
             <button
-              type="submit"
+              type="button"
               class="ml-3 inline-flex items-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              onClick$={() => {
+                const { videoID, videoTimestamp, playAt } = store
+                console.log({ videoID, videoTimestamp, playAt })
+                if (!videoID || !videoTimestamp || !playAt) return
+                const timeOffset = dayjs(new Date(store.playAt)).subtract(
+                  store.videoTimestamp,
+                  'seconds'
+                )
+                const timeDiff = timeOffset.diff(dayjs(), 'milliseconds')
+                const player = YouTubePlayer('player', {
+                  videoId: videoID,
+                  playerVars: {
+                    start:
+                      timeDiff <= 0 ? Math.abs(Math.floor(timeDiff / 1000)) : 0,
+                    autoplay: timeDiff <= 0 ? 1 : 0,
+                    origin: isDev
+                      ? 'http://localhost:5173'
+                      : 'https://qwik.alepholic.dev',
+                    enablejsapi: 1,
+                  },
+                })
+                if (
+                  timeDiff < 0 &&
+                  Math.abs(timeDiff / 1000) > store.videoTimestamp
+                ) {
+                  store.prompt = `The ship has completely sailed`
+                  return
+                }
+                if (timeDiff < 0) {
+                  store.prompt = `The 00:00 ship has sailed, starting at ${dayjs
+                    .duration(Math.floor(Math.abs(timeDiff / 1000)), 'seconds')
+                    .format('mm:ss')} seconds ahead instead`
+                } else {
+                  store.prompt = `Video will start at ${timeOffset.format(
+                    'YYYY-MM-DDTHH:mm:ss'
+                  )}`
+                }
+                const timer = setTimeout(async () => {
+                  await player.playVideo()
+                }, timeDiff)
+              }}
             >
               GO
             </button>
           </div>
-        </form>
+        </div>
         <p>{store.prompt}</p>
         <div id="player" class="self-center" />
       </div>
