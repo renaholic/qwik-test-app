@@ -1,4 +1,4 @@
-import clsx from 'clsx'
+import clsx from '~/utils/clsx'
 import { component$, Slot } from '@builder.io/qwik'
 
 export const baseStyles: { [key: string]: string } = {
