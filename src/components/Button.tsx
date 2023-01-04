@@ -1,5 +1,5 @@
-import clsx from '~/utils/clsx'
 import { component$, Slot } from '@builder.io/qwik'
+import { twMerge } from 'tailwind-merge'
 
 export const baseStyles: { [key: string]: string } = {
   solid:
@@ -26,7 +26,7 @@ export const variantStyles: { [key: string]: { [key: string]: string } } = {
 
 export const Button = component$(
   ({ variant = 'solid', color = 'slate', class: c, href, ...props }: any) => {
-    const className = clsx(
+    const className = twMerge(
       baseStyles[variant],
       variantStyles[variant][color],
       c
