@@ -65,6 +65,7 @@
     "postcss-focus-visible": "^7.1.0",
     "prettier-plugin-tailwindcss": "^0.2.1",
     "tailwind-merge": "^1.8.1",
+    "typed.js": "^2.0.12",
     "youtube-player": "^5.5.2"
   }
 }

@@ -1,5 +1,7 @@
 {
   "home": {
-    "greetings": "歡迎來到Qwik"
+    "greetings": "歡迎來到Qwik",
+    "typed_1": "I go to school by bus.",
+    "typed_2": "I go to school on train."
   }
 }
