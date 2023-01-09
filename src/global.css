@@ -18,36 +18,32 @@
 }
 
 html {
-  height: 100vh;
-  overflow: hidden;
+  @apply h-full bg-gray-100;
+  scroll-behavior: smooth;
 }
 
 body {
+  @apply h-full;
+
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   overflow: auto;
-}
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
   background-color: #fafafa;
   font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system,
     BlinkMacSystemFont, sans-serif;
 }
 
 main {
-  max-width: 760px;
+  /* max-width: 760px;
   margin: 0 auto;
   background-color: white;
   border-radius: 5px;
   box-shadow: 0px 0px 130px -50px var(--qwik-light-purple);
-  overflow: hidden;
+  overflow: hidden; */
 }
 
 h1,
@@ -58,7 +54,7 @@ h2 {
 .lightning {
   filter: hue-rotate(180deg);
 }
-
+/* 
 section {
   padding: 20px;
   border-bottom: 10px solid var(--qwik-dark-blue);
@@ -121,7 +117,7 @@ footer a {
 
 footer a:hover {
   text-decoration: underline;
-}
+} */
 
 a.mindblow {
   margin: 0 auto;
