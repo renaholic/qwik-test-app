@@ -1,7 +1,9 @@
 import {
   component$,
   Signal,
-  Slot, useSignal
+  Slot,
+  useClientEffect$,
+  useSignal,
 } from '@builder.io/qwik'
 import { RequestHandler } from '@builder.io/qwik-city'
 import { twMerge } from 'tailwind-merge'
@@ -147,8 +149,8 @@ export const MobileMenu = component$(
 
 export const navigation = [
   {
-    name: 'Dashboard',
-    href: '#',
+    name: 'Home',
+    href: '/',
     icon: ({ ...props }: any) => (
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +168,7 @@ export const navigation = [
         />
       </svg>
     ),
-    current: true,
+    current: false,
   },
 ]
 
@@ -238,6 +240,12 @@ export const DesktopMenu = component$(() => {
 })
 
 export default component$(() => {
+  useClientEffect$(() => {
+    window.onpopstate = (event) => {
+      if (event) window.location.reload() // reload the page on back or forward
+    }
+  })
+
   const sidebar = useSignal(false)
 
   return (
