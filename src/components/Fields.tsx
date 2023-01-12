@@ -1,3 +1,4 @@
+import { QwikIntrinsicElements } from '@builder.io/qwik'
 import { twMerge } from 'tailwind-merge'
 
 export const formClasses =
@@ -26,11 +27,15 @@ export function TextField({
   )
 }
 
-export const SelectField = ({ id, label, className = '', ...props }: any) => {
+export const SelectField = ({
+  label,
+  className = '',
+  ...props
+}: QwikIntrinsicElements['select'] & { label?: string }) => {
   return (
     <div class={className}>
       {label && <Label>{label}</Label>}
-      <select id={id} class={twMerge(formClasses, 'pr-8')} {...props} />
+      <select class={twMerge(formClasses, 'pr-8')} {...props} />
     </div>
   )
 }
