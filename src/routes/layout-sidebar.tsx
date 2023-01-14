@@ -31,11 +31,11 @@ export const MenuItem = component$(
 )
 export const MobileMenu = component$(
   ({ sidebar }: { sidebar: Signal<boolean> }) => {
-    if (!sidebar.value) return <></>
-    else
-      return (
-        <div class="relative z-40 md:hidden">
-          {/* <Transition.Child
+    // if (!sidebar.value) return <></>
+    // else
+    return (
+      <div class="relative z-40 md:hidden">
+        {/* <Transition.Child
    as={Fragment}
    enter="transition-opacity ease-linear duration-300"
    enterFrom="opacity-0"
@@ -44,11 +44,11 @@ export const MobileMenu = component$(
    leaveFrom="opacity-100"
    leaveTo="opacity-0"
  > */}
-          <div class="fixed inset-0 bg-gray-600 bg-opacity-75" />
-          {/* </Transition.Child> */}
+        <div class="fixed inset-0 bg-gray-600 bg-opacity-75" />
+        {/* </Transition.Child> */}
 
-          <div class="fixed inset-0 z-40 flex">
-            {/* <Transition.Child
+        <div class="fixed inset-0 z-40 flex">
+          {/* <Transition.Child
      as={Fragment}
      enter="transition ease-in-out duration-300 transform"
      enterFrom="-translate-x-full"
@@ -57,8 +57,8 @@ export const MobileMenu = component$(
      leaveFrom="translate-x-0"
      leaveTo="-translate-x-full"
    > */}
-            <div class="relative flex w-full max-w-xs flex-1 flex-col bg-gray-800">
-              {/* <Transition.Child
+          <div class="relative flex w-full max-w-xs flex-1 flex-col bg-gray-800">
+            {/* <Transition.Child
          as={Fragment}
          enter="ease-in-out duration-300"
          enterFrom="opacity-0"
@@ -67,83 +67,83 @@ export const MobileMenu = component$(
          leaveFrom="opacity-100"
          leaveTo="opacity-0"
        > */}
-              <div class="absolute top-0 right-0 -mr-12 pt-2">
-                <button
-                  type="button"
-                  class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                  onClick$={() => (sidebar.value = false)}
+            <div class="absolute top-0 right-0 -mr-12 pt-2">
+              <button
+                type="button"
+                class="ml-1 flex h-10 w-10 items-center justify-center rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                onClick$={() => (sidebar.value = false)}
+              >
+                <span class="sr-only">Close sidebar</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  class="h-6 w-6 text-white"
+                  aria-hidden="true"
                 >
-                  <span class="sr-only">Close sidebar</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    class="h-6 w-6 text-white"
-                    aria-hidden="true"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </div>
-              {/* </Transition.Child> */}
-              <div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
-                <div class="flex flex-shrink-0 items-center px-4">
-                  <img
-                    class="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Your Company"
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 18L18 6M6 6l12 12"
                   />
-                </div>
-                <nav class="mt-5 space-y-1 px-2">
-                  {navigation.map(({ name, href, current, ...item }) => (
-                    <MenuItem {...{ name, href, current }} key={name}>
-                      <item.icon
-                        q:slot="icon"
-                        class={twMerge(
-                          current
-                            ? 'text-gray-300'
-                            : 'text-gray-400 group-hover:text-gray-300',
-                          'mr-3 h-6 w-6 flex-shrink-0'
-                        )}
-                        aria-hidden="true"
-                      />
-                    </MenuItem>
-                  ))}
-                </nav>
-              </div>
-              <div class="flex flex-shrink-0 bg-gray-700 p-4">
-                <a href="/" class="group block flex-shrink-0">
-                  <div class="flex items-center">
-                    <div>
-                      <img
-                        class="inline-block h-10 w-10 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                        alt=""
-                      />
-                    </div>
-                    <div class="ml-3">
-                      <p class="text-base font-medium text-white">Tom Cook</p>
-                      <p class="text-sm font-medium text-gray-400 group-hover:text-gray-300">
-                        View profile
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              </div>
+                </svg>
+              </button>
             </div>
             {/* </Transition.Child> */}
-            <div class="w-14 flex-shrink-0">
-              {/* Force sidebar to shrink to fit close icon */}
+            <div class="h-0 flex-1 overflow-y-auto pt-5 pb-4">
+              <div class="flex flex-shrink-0 items-center px-4">
+                <img
+                  class="h-8 w-auto"
+                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                  alt="Your Company"
+                />
+              </div>
+              <nav class="mt-5 space-y-1 px-2">
+                {navigation.map(({ name, href, current, ...item }) => (
+                  <MenuItem {...{ name, href, current }} key={name}>
+                    <item.icon
+                      q:slot="icon"
+                      class={twMerge(
+                        current
+                          ? 'text-gray-300'
+                          : 'text-gray-400 group-hover:text-gray-300',
+                        'mr-3 h-6 w-6 flex-shrink-0'
+                      )}
+                      aria-hidden="true"
+                    />
+                  </MenuItem>
+                ))}
+              </nav>
+            </div>
+            <div class="flex flex-shrink-0 bg-gray-700 p-4">
+              <a href="/" class="group block flex-shrink-0">
+                <div class="flex items-center">
+                  <div>
+                    <img
+                      class="inline-block h-10 w-10 rounded-full"
+                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      alt=""
+                    />
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-base font-medium text-white">Tom Cook</p>
+                    <p class="text-sm font-medium text-gray-400 group-hover:text-gray-300">
+                      View profile
+                    </p>
+                  </div>
+                </div>
+              </a>
             </div>
           </div>
+          {/* </Transition.Child> */}
+          <div class="w-14 flex-shrink-0">
+            {/* Force sidebar to shrink to fit close icon */}
+          </div>
         </div>
-      )
+      </div>
+    )
   }
 )
 

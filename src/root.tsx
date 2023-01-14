@@ -53,7 +53,7 @@ export default component$(() => {
 
   useOnWindow(
     'load',
-    $((event) => {
+    $(() => {
       // document.startViewTransition
       console.log('ready')
     })

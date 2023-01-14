@@ -1,18 +1,11 @@
 import {
-  $,
-  component$,
-  noSerialize,
-  Slot,
-  useClientEffect$,
-  useContext,
-  useOnWindow,
-  useSignal,
+  component$, Slot, useContext, useSignal
 } from '@builder.io/qwik'
 import {
   LinkProps,
   RequestHandler,
   useLocation,
-  useNavigate,
+  useNavigate
 } from '@builder.io/qwik-city'
 import { twMerge } from 'tailwind-merge'
 import { ChangeLocale } from '../components/header/change-locale'

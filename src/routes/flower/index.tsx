@@ -1,12 +1,10 @@
 import {
   component$,
-  useClientEffect$,
-  useContext,
-  useStore,
-  useStylesScoped$,
+  useClientEffect$, useStore,
+  useStylesScoped$
 } from '@builder.io/qwik'
 import { DocumentHead, useLocation } from '@builder.io/qwik-city'
-import { pageContext, PageState, usePageContext } from '../../root'
+import { usePageContext } from '../../root'
 import styles from './flower.css?inline'
 
 export default component$(() => {
