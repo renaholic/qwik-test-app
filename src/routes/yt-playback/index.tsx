@@ -14,6 +14,7 @@ import YouTubePlayer from 'youtube-player'
 dayjs.extend(duration)
 
 export const isDev = import.meta.env.DEV
+import { usePageContext } from '../../root'
 
 export const presets = [
   { videoID: 'hAqqAwhfet8', videoTimestamp: 40, label: 'Unicorn' },
@@ -62,6 +63,8 @@ export default component$(() => {
   })
 
   const ref = useSignal<Element | undefined>(undefined)
+
+  usePageContext('Youtube Playback')
 
   useClientEffect$(() => {
     store.playAt = isDev

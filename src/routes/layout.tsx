@@ -1,22 +1,64 @@
-import { component$, Slot, useClientEffect$, useSignal } from '@builder.io/qwik'
-import { RequestHandler } from '@builder.io/qwik-city'
-import { ChangeLocale } from '../components/header/change-locale'
-import { config } from '../speak-config'
+import {
+  $,
+  component$,
+  noSerialize,
+  Slot,
+  useClientEffect$,
+  useContext,
+  useOnWindow,
+  useSignal,
+} from '@builder.io/qwik'
+import {
+  LinkProps,
+  RequestHandler,
+  useLocation,
+  useNavigate,
+} from '@builder.io/qwik-city'
 import { twMerge } from 'tailwind-merge'
+import { ChangeLocale } from '../components/header/change-locale'
+import { pageContext, PageState } from '../root'
+import { config } from '../speak-config'
+
+export const menu = [
+  { name: 'Home', href: '/' },
+  { name: 'Flower', href: '/flower/' },
+  { name: 'Youtube Player', href: '/yt-playback/' },
+]
+export const Link = component$<LinkProps>(({ href, ...props }) => {
+  const nav = useNavigate()
+
+  return (
+    <a
+      preventdefault:click
+      onClick$={() => {
+        if (!href) return
+        // @ts-ignore 2339
+        if (document.startViewTransition)
+          // @ts-ignore 2339
+          document.startViewTransition(() => (nav.path = href))
+        else {
+          nav.path = href
+        }
+      }}
+      {...props}
+    >
+      <Slot />
+    </a>
+  )
+})
 
 export default component$(() => {
-  useClientEffect$(() => {
-    window.onpopstate = (event) => {
-      if (event) window.location.reload() // reload the page on back or forward
-    }
-  })
-
   const isProfileDropdown = useSignal(false)
   const isMobileMenu = useSignal(false)
 
+  const { pathname } = useLocation()
+  const isCurrent = (href: string) => pathname === href
+
+  const pageState = useContext<PageState>(pageContext)
+
   return (
     <div class="min-h-full">
-      <nav class="bg-gray-800">
+      <nav class="bg-gray-800" id="main-header">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div class="flex h-16 items-center justify-between">
             <div class="flex items-center">
@@ -30,27 +72,21 @@ export default component$(() => {
               <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline space-x-4">
                   {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
-                  <a
-                    href="/"
-                    class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
-                    aria-current="page"
-                  >
-                    Home
-                  </a>
-
-                  <a
-                    href="/flower"
-                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                  >
-                    Flower
-                  </a>
-
-                  <a
-                    href="/yt-playback"
-                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                  >
-                    Youtube Player
-                  </a>
+                  {menu.map(({ name, href }) => (
+                    <Link
+                      class={twMerge(
+                        'rounded-md px-3 py-2 text-sm font-medium',
+                        ['transition-colors ease-linear'],
+                        isCurrent(href)
+                          ? 'bg-gray-900 text-white'
+                          : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                      )}
+                      href={href}
+                      key={href}
+                    >
+                      {name}
+                    </Link>
+                  ))}
                 </div>
               </div>
             </div>
@@ -88,9 +124,9 @@ export default component$(() => {
                       id="user-menu-button"
                       aria-expanded="false"
                       aria-haspopup="true"
-                      onClick$={() =>
-                        (isProfileDropdown.value = !isProfileDropdown.value)
-                      }
+                      onClick$={() => {
+                        isProfileDropdown.value = !isProfileDropdown.value
+                      }}
                     >
                       <span class="sr-only">Open user menu</span>
                       <img
@@ -113,15 +149,15 @@ export default component$(() => {
               --> */}
                   <div
                     class={twMerge(
-                      'absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none',
+                      'absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition-none focus:outline-none',
                       isProfileDropdown.value
                         ? [
-                            'transition duration-100 ease-out',
+                            'transition-[scale, opacity] duration-100 ease-out',
                             'scale-100 transform opacity-100',
                           ]
                         : [
-                            'transition duration-75 ease-in',
-                            'scale-95 transform opacity-0',
+                            'transition-[scale, opacity] duration-75 ease-in',
+                            'hidden scale-95 transform opacity-0',
                           ]
                     )}
                     role="menu"
@@ -131,40 +167,52 @@ export default component$(() => {
                   >
                     {/* <!-- Active: "bg-gray-100", Not Active: "" --> */}
                     <div
-                      class="block px-4 py-2 text-sm text-gray-700"
+                      class={twMerge(
+                        'block px-4 py-2 text-sm text-gray-700',
+                        pathname === '/profile' ? 'bg-gray-100' : ''
+                      )}
                       tabIndex={-1}
                     >
                       <ChangeLocale />
                     </div>
-                    <a
+                    <Link
                       href="#"
-                      class="block px-4 py-2 text-sm text-gray-700"
+                      class={twMerge(
+                        'block px-4 py-2 text-sm text-gray-700',
+                        pathname === '/profile' ? 'bg-gray-100' : ''
+                      )}
                       role="menuitem"
                       tabIndex={-1}
                       id="user-menu-item-0"
                     >
                       Your Profile
-                    </a>
+                    </Link>
 
-                    <a
+                    <Link
                       href="#"
-                      class="block px-4 py-2 text-sm text-gray-700"
+                      class={twMerge(
+                        'block px-4 py-2 text-sm text-gray-700',
+                        pathname === '/profile' ? 'bg-gray-100' : ''
+                      )}
                       role="menuitem"
                       tabIndex={-1}
                       id="user-menu-item-1"
                     >
                       Settings
-                    </a>
+                    </Link>
 
-                    <a
+                    <Link
                       href="#"
-                      class="block px-4 py-2 text-sm text-gray-700"
+                      class={twMerge(
+                        'block px-4 py-2 text-sm text-gray-700',
+                        pathname === '/profile' ? 'bg-gray-100' : ''
+                      )}
                       role="menuitem"
                       tabIndex={-1}
                       id="user-menu-item-2"
                     >
                       Sign out
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -186,8 +234,8 @@ export default component$(() => {
             --> */}
                 <svg
                   class={twMerge(
-                    'block h-6 w-6',
-                    isMobileMenu.value && 'hidden'
+                    'h-6 w-6',
+                    isMobileMenu.value ? 'hidden' : 'block'
                   )}
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -209,8 +257,8 @@ export default component$(() => {
             --> */}
                 <svg
                   class={twMerge(
-                    'hidden h-6 w-6',
-                    isMobileMenu.value && 'block'
+                    'h-6 w-6',
+                    isMobileMenu.value ? 'block' : 'hidden'
                   )}
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
@@ -237,41 +285,22 @@ export default component$(() => {
         >
           <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
             {/* <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" --> */}
-            <a
-              href="#"
-              class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white"
-              aria-current="page"
-            >
-              Dashboard
-            </a>
-
-            <a
-              href="#"
-              class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-            >
-              Team
-            </a>
-
-            <a
-              href="#"
-              class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-            >
-              Projects
-            </a>
-
-            <a
-              href="#"
-              class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-            >
-              Calendar
-            </a>
-
-            <a
-              href="#"
-              class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-            >
-              Reports
-            </a>
+            {menu.map(({ name, href }) => (
+              <Link
+                class={twMerge(
+                  'block rounded-md px-3 py-2 text-base font-medium',
+                  isCurrent(href)
+                    ? 'bg-gray-900 text-white'
+                    : 'text-gray-300 hover:bg-gray-700 hover:text-white'
+                )}
+                aria-current="page"
+                href={href}
+                key={href}
+                // onClick$={() => toPage(nav, href)}
+              >
+                {name}
+              </Link>
+            ))}
           </div>
           <div class="border-t border-gray-700 pt-4 pb-3">
             <div class="flex items-center px-5">
@@ -343,7 +372,7 @@ export default component$(() => {
         <header>
           <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 class="text-3xl font-bold leading-tight tracking-tight text-gray-900">
-              Dashboard
+              {pageState.pageName}
             </h1>
           </div>
         </header>

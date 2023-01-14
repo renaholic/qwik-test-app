@@ -1,4 +1,13 @@
-import { component$ } from '@builder.io/qwik'
+import {
+  $,
+  component$,
+  createContext,
+  useClientEffect$,
+  useContext,
+  useContextProvider,
+  useOnWindow,
+  useStore,
+} from '@builder.io/qwik'
 import {
   QwikCityProvider,
   RouterOutlet,
@@ -6,9 +15,22 @@ import {
 } from '@builder.io/qwik-city'
 import { QwikSpeak } from 'qwik-speak'
 import { RouterHead } from './components/router-head/router-head'
-
 import './global.css'
 import { config, translationFn } from './speak-config'
+
+export interface PageState {
+  pageName: string
+}
+
+export const pageContext = createContext<PageState>('page-context')
+
+export const usePageContext = (pageName: string) => {
+  const page = useContext<PageState>(pageContext)
+
+  useClientEffect$(() => {
+    page.pageName = pageName
+  })
+}
 
 export default component$(() => {
   /**
@@ -17,6 +39,28 @@ export default component$(() => {
    *
    * Dont remove the `<head>` and `<body>` elements.
    */
+
+  const pageState = useStore<PageState>({
+    pageName: 'Dashboard',
+  })
+
+  useOnWindow(
+    'popstate',
+    $((event) => {
+      if (event) window.location.reload() // reload the page on back or forward
+    })
+  )
+
+  useOnWindow(
+    'load',
+    $((event) => {
+      // document.startViewTransition
+      console.log('ready')
+    })
+  )
+
+  useContextProvider(pageContext, pageState)
+
   return (
     // <QwikCity>
     //   <head>

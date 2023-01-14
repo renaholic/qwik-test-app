@@ -1,10 +1,11 @@
 import { component$ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
-import { Link } from '@builder.io/qwik-city'
 import { $translate as t, Speak } from 'qwik-speak'
 import { TypedComponent } from '../components/TypedComponent'
+import { usePageContext } from '../root'
 
 export const Home = component$(() => {
+  usePageContext('Home')
   return (
     <div>
       <h1 class="text-[2em]">
@@ -19,7 +20,7 @@ export const Home = component$(() => {
         ]}
       />
 
-      <div class="flex flex-col gap-3">
+      {/* <div class="flex flex-col gap-3">
         <Link class="mindblow" href="/flower">
           Blow my mind 🤯
         </Link>
@@ -31,7 +32,7 @@ export const Home = component$(() => {
         <Link class="mindblow" href="/login">
           Login
         </Link>
-      </div>
+      </div> */}
     </div>
   )
 })
