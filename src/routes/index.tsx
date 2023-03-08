@@ -1,17 +1,53 @@
-import { component$ } from '@builder.io/qwik'
+import { component$, useBrowserVisibleTask$, useSignal } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
+import { isBrowser } from '@builder.io/qwik/build'
+import { DragGesture } from '@use-gesture/vanilla'
 import { $translate as t, Speak } from 'qwik-speak'
 import { TypedComponent } from '../components/TypedComponent'
 import { usePageContext } from '../root'
+import anime from 'animejs'
 
 export const Home = component$(() => {
   usePageContext('Home')
+
+  const header = useSignal<Element>()
+
+  const isActive = useSignal(false)
+
+  useBrowserVisibleTask$(async () => {
+    if (isBrowser && header.value) {
+      const gesture = new DragGesture(
+        header.value,
+        ({ active, movement: [mx, my] }) => {
+          isActive.value = active
+          anime({
+            targets: header.value,
+            translateX: active ? mx : 0,
+            translateY: active ? my : 0,
+            duration: active ? 0 : 1000,
+          })
+        },
+        {
+          axis: 'x',
+        }
+      )
+      return () => gesture.destroy()
+    }
+  })
+
   return (
     <div>
-      <h1 class="text-[2em]">
-        {t('home.greetings@@Welcome to Qwik')}{' '}
-        <span class="lightning">⚡️</span>
+      <h1 class="touch-pan-y select-none text-[2em]" ref={header}>
+        {isActive.value ? (
+          <>Thanks animejs and @use-gesture!</>
+        ) : (
+          <>
+            {t('home.greetings@@Welcome to Qwik')}{' '}
+            <span class="lightning">⚡️</span>
+          </>
+        )}
       </h1>
+      <img src="https://http.cat/200" alt="200" />
 
       <TypedComponent
         strings={[
