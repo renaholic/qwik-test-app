@@ -1,13 +1,7 @@
 import {
-  component$,
-  useSignal,
-  useBrowserVisibleTask$,
-  useTask$,
-  useStore,
-  NoSerialize,
+  component$, NoSerialize, useBrowserVisibleTask$, useSignal, useStore
 } from '@builder.io/qwik'
 import { DocumentHead } from '@builder.io/qwik-city'
-import { isBrowser } from '@builder.io/qwik/build'
 import { DragGesture } from '@use-gesture/vanilla'
 import anime from 'animejs'
 import { Speak } from 'qwik-speak'
