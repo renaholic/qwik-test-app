@@ -14,6 +14,7 @@ export const menu = [
   { name: 'Home', href: '/' },
   { name: 'Flower', href: '/flower/' },
   { name: 'Youtube Player', href: '/yt-playback/' },
+  { name: 'Swipe', href: '/swipe/' },
 ]
 export const Link = component$<LinkProps>(({ href, ...props }) => {
   const nav = useNavigate()
