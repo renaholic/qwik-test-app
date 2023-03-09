@@ -6,6 +6,7 @@ import {
   useSignal,
   useStore,
 } from '@builder.io/qwik'
+import Toastify from 'toastify-js'
 import { DocumentHead } from '@builder.io/qwik-city'
 import { Gesture } from '@use-gesture/vanilla'
 import anime from 'animejs'
@@ -56,6 +57,16 @@ export const DraggableDiv = component$(() => {
 
           const scale = isActive ? 1.1 : 1 // Active cards lift up a bit
 
+          if (isGone.value && isLast) {
+            Toastify({
+              text: 'Bye',
+              duration: 3000,
+              close: true,
+              gravity: 'top', // `top` or `bottom`
+              position: 'left', // `left`, `center` or `right`
+              stopOnFocus: true, // Prevents dismissing of toast on hover
+            }).showToast()
+          }
           anime({
             targets: ele,
             translateX: newX,
@@ -80,6 +91,14 @@ export const DraggableDiv = component$(() => {
                     scale,
                   })
                   isGone.value = false
+                  Toastify({
+                    text: 'I am back!',
+                    duration: 3000,
+                    close: true,
+                    gravity: 'top', // `top` or `bottom`
+                    position: 'left', // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                  }).showToast()
                 }, 1000)
               }
             },

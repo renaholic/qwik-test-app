@@ -16,6 +16,7 @@ import {
 import { QwikSpeak } from 'qwik-speak'
 import { RouterHead } from './components/router-head/router-head'
 import './global.css'
+import 'toastify-js/src/toastify.css'
 import { config, translationFn } from './speak-config'
 
 export interface PageState {
