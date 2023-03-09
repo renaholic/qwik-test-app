@@ -1,5 +1,5 @@
 import {
-  component$, NoSerialize, useBrowserVisibleTask$, useSignal, useStore
+  component$, useBrowserVisibleTask$, useSignal
 } from '@builder.io/qwik'
 import { DocumentHead } from '@builder.io/qwik-city'
 import { DragGesture } from '@use-gesture/vanilla'
@@ -16,15 +16,15 @@ export const DraggableDiv = component$(() => {
   const isActive = useSignal(false)
 
   const isGone = useSignal(false)
-  const store = useStore<{
-    time: null | string
-    cleanup: NoSerialize<() => void>
-    animateInstance: NoSerialize<anime.AnimeInstance>
-  }>({
-    time: null,
-    cleanup: undefined,
-    animateInstance: undefined,
-  })
+  // const store = useStore<{
+  //   time: null | string
+  //   cleanup: NoSerialize<() => void>
+  //   animateInstance: NoSerialize<anime.AnimeInstance>
+  // }>({
+  //   time: null,
+  //   cleanup: undefined,
+  //   animateInstance: undefined,
+  // })
 
   useBrowserVisibleTask$(async ({ track }) => {
     track(() => eleRef)
@@ -34,7 +34,6 @@ export const DraggableDiv = component$(() => {
     const gesture = new DragGesture(
       eleRef.value,
       ({
-        args: [index],
         active,
         movement: [mx, my],
         direction: [xDir],
