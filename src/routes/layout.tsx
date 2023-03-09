@@ -1,11 +1,9 @@
-import {
-  component$, Slot, useContext, useSignal
-} from '@builder.io/qwik'
+import { component$, Slot, useContext, useSignal } from '@builder.io/qwik'
 import {
   LinkProps,
   RequestHandler,
   useLocation,
-  useNavigate
+  useNavigate,
 } from '@builder.io/qwik-city'
 import { twMerge } from 'tailwind-merge'
 import { ChangeLocale } from '../components/header/change-locale'
@@ -50,7 +48,7 @@ export default component$(() => {
   const pageState = useContext<PageState>(pageContext)
 
   return (
-    <div class="min-h-full">
+    <div class="min-h-full w-full overflow-hidden">
       <nav class="bg-gray-800" id="main-header">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div class="flex h-16 items-center justify-between">
