@@ -65,6 +65,7 @@
     "@types/youtube-player": "^5.5.6",
     "@use-gesture/vanilla": "^10.2.24",
     "animejs": "^3.2.1",
+    "daisyui": "^2.51.3",
     "dayjs": "^1.11.7",
     "firebase": "^9.15.0",
     "focus-visible": "^5.2.0",
