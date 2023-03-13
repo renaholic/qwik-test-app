@@ -54,3 +54,23 @@
  * the styles in here will be applied to the Document, without any sort of CSS scoping.
  *
  */
+
+html {
+  @apply h-full bg-gray-100;
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply h-full;
+
+  /* position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto; */
+
+  /* background-color: #fafafa;
+  font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, sans-serif; */
+}
