@@ -50,44 +50,42 @@ export function SystemIcon(props: any) {
   )
 }
 
-export const ThemeSelector = component$<QwikIntrinsicElements['div']>(
-  ({ class: c }) => {
-    const state = useStore({
-      theme: 'system',
+export const ThemeSelector = component$<QwikIntrinsicElements['div']>(() => {
+  const state = useStore({
+    theme: 'system',
+  })
+
+  useOnWindow(
+    'storage',
+    $((ev: Event) => {
+      const event = ev as StorageEvent
+      state.theme =
+        themes.find(({ name }) => name === event.newValue)?.value || 'system'
     })
+  )
 
-    useOnWindow(
-      'storage',
-      $((ev: Event) => {
-        const event = ev as StorageEvent
-        state.theme =
-          themes.find(({ name }) => name === event.newValue)?.value || 'system'
-      })
-    )
+  useBrowserVisibleTask$(
+    ({ track }) => {
+      track(() => state.theme)
+      document.documentElement.setAttribute('data-theme', state.theme)
+      state.theme = window.localStorage.theme
+    },
+    { eagerness: 'load' }
+  )
 
-    useBrowserVisibleTask$(
-      ({ track }) => {
-        track(() => state.theme)
-        document.documentElement.setAttribute('data-theme', state.theme)
-        state.theme = window.localStorage.theme
-      },
-      { eagerness: 'load' }
-    )
-
-    return (
-      <div class="flex flex-row items-center gap-2">
-        <LightIcon class="h-4" />
-        <input
-          type="checkbox"
-          class="toggle toggle-md"
-          checked={state.theme === 'dark'}
-          onChange$={(e) => {
-            window.localStorage.theme = e.target.checked ? 'dark' : 'light'
-            state.theme = e.target.checked ? 'dark' : 'light'
-          }}
-        />
-        <DarkIcon class="h-4" />
-      </div>
-    )
-  }
-)
+  return (
+    <div class="flex flex-row items-center gap-2">
+      <LightIcon class="h-4" />
+      <input
+        type="checkbox"
+        class="toggle toggle-md"
+        checked={state.theme === 'dark'}
+        onChange$={(e) => {
+          window.localStorage.theme = e.target.checked ? 'dark' : 'light'
+          state.theme = e.target.checked ? 'dark' : 'light'
+        }}
+      />
+      <DarkIcon class="h-4" />
+    </div>
+  )
+})

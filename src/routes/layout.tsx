@@ -1,14 +1,7 @@
-import { component$, Slot, useContext, useSignal } from '@builder.io/qwik'
-import {
-  LinkProps,
-  RequestHandler,
-  useLocation,
-  useNavigate,
-} from '@builder.io/qwik-city'
-import { twMerge } from 'tailwind-merge'
+import { component$, Slot } from '@builder.io/qwik'
+import { LinkProps, RequestHandler, useNavigate } from '@builder.io/qwik-city'
 import { ChangeLocale } from '../components/header/change-locale'
 import { ThemeSelector } from '../components/ThemeSelector'
-import { pageContext, PageState } from '../root'
 import { config } from '../speak-config'
 
 export const menu = [
@@ -41,13 +34,13 @@ export const Link = component$<LinkProps>(({ href, ...props }) => {
 })
 
 export default component$(() => {
-  const isProfileDropdown = useSignal(false)
-  const isMobileMenu = useSignal(false)
+  // const isProfileDropdown = useSignal(false)
+  // const isMobileMenu = useSignal(false)
 
-  const { pathname } = useLocation()
-  const isCurrent = (href: string) => pathname === href
+  // const { pathname } = useLocation()
+  // const isCurrent = (href: string) => pathname === href
 
-  const pageState = useContext<PageState>(pageContext)
+  // const pageState = useContext<PageState>(pageContext)
 
   return (
     <div class="min-h-full w-full overflow-hidden">
