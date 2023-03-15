@@ -93,9 +93,9 @@ export default component$(() => {
                 ))}
               </ul>
             </div>
-            <div class="navbar-end gap-2">
-              <ThemeSelector class="relative z-10" />
+            <div class="navbar-end gap-2 pr-2">
               <ChangeLocale />
+              <ThemeSelector class="relative z-10 h-6 w-6" />
             </div>
           </div>
           <main>
