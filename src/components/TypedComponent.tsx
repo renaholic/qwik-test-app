@@ -1,34 +1,30 @@
 import {
   Component,
   component$,
-  useClientEffect$,
+  useBrowserVisibleTask$,
   useSignal,
 } from '@builder.io/qwik'
 import Typed from 'typed.js'
 
 export const TypedComponent: Component<{
   strings?: string[]
-}> = component$(({ strings }) => {
+}> = component$(({ strings = [] }) => {
   const ref = useSignal<HTMLSpanElement>()
 
-  useClientEffect$(
-    () => {
-      if (!ref.value) return
-      const typed = new Typed(ref.value, {
-        strings: strings,
-        // stringsElement: '#typed-strings',
-        typeSpeed: 80,
-        backDelay: 1000,
-        backSpeed: 100,
-        loop: true,
-        smartBackspace: true,
-      })
-      return () => typed.destroy()
-    },
-    {
-      eagerness: 'visible',
-    }
-  )
+  useBrowserVisibleTask$(() => {
+    if (!ref.value) return
+    const typed = new Typed(ref.value, {
+      strings,
+      // stringsElement: '#typed-strings',
+      typeSpeed: 80,
+      backDelay: 1000,
+      backSpeed: 100,
+      loop: true,
+      smartBackspace: true,
+    })
+    return () => typed.destroy()
+  })
+
   return (
     <div>
       {/* <div id="typed-strings">

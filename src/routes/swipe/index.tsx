@@ -1,8 +1,14 @@
 import {
-  component$, useBrowserVisibleTask$, useSignal
+  component$,
+  noSerialize,
+  NoSerialize,
+  useBrowserVisibleTask$,
+  useSignal,
+  useStore,
 } from '@builder.io/qwik'
+import Toastify from 'toastify-js'
 import { DocumentHead } from '@builder.io/qwik-city'
-import { DragGesture } from '@use-gesture/vanilla'
+import { Gesture } from '@use-gesture/vanilla'
 import anime from 'animejs'
 import { Speak } from 'qwik-speak'
 import { twMerge } from 'tailwind-merge'
@@ -16,58 +22,92 @@ export const DraggableDiv = component$(() => {
   const isActive = useSignal(false)
 
   const isGone = useSignal(false)
-  // const store = useStore<{
-  //   time: null | string
-  //   cleanup: NoSerialize<() => void>
-  //   animateInstance: NoSerialize<anime.AnimeInstance>
-  // }>({
-  //   time: null,
-  //   cleanup: undefined,
-  //   animateInstance: undefined,
-  // })
+
+  const store = useStore<{
+    gesture: NoSerialize<Gesture>
+  }>({
+    gesture: undefined,
+  })
 
   useBrowserVisibleTask$(async ({ track }) => {
     track(() => eleRef)
 
-    if (!eleRef.value) return
+    const ele = eleRef.value
 
-    const gesture = new DragGesture(
-      eleRef.value,
-      ({
-        active,
-        movement: [mx, my],
-        direction: [xDir],
-        velocity: [vx],
-      }) => {
-        const isFlick = vx > 0.2 // If you flick hard enough it should trigger the card to fly out
-        if (!active && isFlick) isGone.value = true // If button/finger's up and trigger velocity is reached, we flag the card ready to fly out
+    if (!ele) return
 
-        const x = isGone.value
-          ? (200 + window.innerWidth) * xDir
-          : active
-          ? mx
-          : 0 // When a card is gone it flys out left or right, otherwise goes back to zero
-        const rotate = mx / 100 + (isGone ? xDir * 3 * vx : 0) // How much the card tilts, flicking it harder makes it rotate faster
+    store.gesture = noSerialize(
+      new Gesture(ele, {
+        onDrag: ({
+          active: isActive,
+          movement: [mx, my],
+          direction: [xDir],
+          velocity: [vx],
+          last: isLast,
+        }) => {
+          const isFlick = vx > 0.5 // If you flick hard enough it should trigger the card to fly out
+          if (!isActive && isFlick) isGone.value = true // If button/finger's up and trigger velocity is reached, we flag the card ready to fly out
 
-        const scale = active ? 1.1 : 1 // Active cards lift up a bit
+          const newX = isGone.value
+            ? window.innerWidth * xDir
+            : isActive
+            ? mx
+            : 0 // When a card is gone it flys out left or right, otherwise goes back to zero
+          const rotate = isActive ? mx / 100 + (isGone ? xDir * 3 * vx : 0) : 0 // How much the card tilts, flicking it harder makes it rotate faster
 
-        anime({
-          targets: eleRef.value,
-          translateX: x,
-          translateY: active ? my : 0,
-          duration: active ? 0 : 1000,
-          elasticity: 600,
+          const scale = isActive ? 1.1 : 1 // Active cards lift up a bit
 
-          scale,
-          rotate,
-        })
-      },
-      {
-        axis: 'x',
-      }
+          if (isGone.value && isLast) {
+            Toastify({
+              text: 'Bye',
+              duration: 3000,
+              close: true,
+              gravity: 'top', // `top` or `bottom`
+              position: 'left', // `left`, `center` or `right`
+              stopOnFocus: true, // Prevents dismissing of toast on hover
+            }).showToast()
+          }
+          anime({
+            targets: ele,
+            translateX: newX,
+            translateY: isActive ? my : 0,
+            duration: isActive ? 0 : 1000,
+            elasticity: 600,
+
+            scale,
+            rotate,
+
+            complete: ({ completed }) => {
+              if (isGone && completed && isLast) {
+                setTimeout(() => {
+                  anime({
+                    targets: ele,
+                    translateX: 0,
+                    translateY: 0,
+                    duration: 1000,
+                    elasticity: 600,
+                    easing: 'spring(1, 80, 10, 0)',
+                    rotate: 0,
+                    scale,
+                  })
+                  isGone.value = false
+                  Toastify({
+                    text: 'I am back!',
+                    duration: 3000,
+                    close: true,
+                    gravity: 'top', // `top` or `bottom`
+                    position: 'left', // `left`, `center` or `right`
+                    stopOnFocus: true, // Prevents dismissing of toast on hover
+                  }).showToast()
+                }, 1000)
+              }
+            },
+          })
+        },
+      })
     )
 
-    return () => gesture.destroy()
+    return () => store.gesture?.destroy()
   })
 
   return (
@@ -75,7 +115,7 @@ export const DraggableDiv = component$(() => {
       ref={eleRef}
       class={twMerge(
         'touch-pan-y select-none',
-        'h-9 bg-gray-800',
+        'bg-gray-800 py-9',
         'text-2xl text-gray-300',
         'flex items-center justify-center',
         'rounded-md shadow-md'
@@ -89,12 +129,23 @@ export const DraggableDiv = component$(() => {
 export default component$(() => {
   return (
     <Speak assets={['home']}>
-      <a href="https://use-gesture.netlify.app/" target="_blank">
-        use-gesture
-      </a>
-      <a href="https://animejs.com/" target="_blank">
-        animejs
-      </a>
+      <div class={'mb-3 flex gap-3'}>
+        <a
+          href="https://use-gesture.netlify.app/"
+          target="_blank"
+          class="rounded-full bg-slate-800 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50 active:text-slate-400"
+        >
+          use-gesture
+        </a>
+
+        <a
+          href="https://animejs.com/"
+          target="_blank"
+          class="rounded-full bg-slate-800 py-2 px-4 text-sm font-medium text-white hover:bg-slate-700 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white/50 active:text-slate-400"
+        >
+          animejs
+        </a>
+      </div>
       <DraggableDiv />
     </Speak>
   )
