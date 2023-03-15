@@ -1,6 +1,6 @@
-import { component$, useClientEffect$, useSignal } from '@builder.io/qwik'
+import { component$, useBrowserVisibleTask$, useSignal } from '@builder.io/qwik'
 import { changeLocale, useSpeakContext } from 'qwik-speak'
-import { SelectField } from '../Fields'
+import { twMerge } from 'tailwind-merge'
 
 export const ChangeLocale = component$(() => {
   const ctx = useSpeakContext()
@@ -10,26 +10,34 @@ export const ChangeLocale = component$(() => {
   } = ctx
 
   const currentLocale = useSignal(lang)
-  useClientEffect$(({ track }) => {
+
+  useBrowserVisibleTask$(({ track }) => {
     track(() => currentLocale)
     currentLocale.value = lang
   })
 
   return (
-    <SelectField
-      value={currentLocale.value}
-      onChange$={async ({ target: { value } }) =>
-        await changeLocale(
-          supportedLocales.find(({ lang }) => lang === value)!,
-          ctx
-        )
-      }
-    >
-      {ctx.config.supportedLocales.map(({ lang }) => (
-        <option value={lang} selected={currentLocale.value === lang}>
-          {lang}
-        </option>
-      ))}
-    </SelectField>
+    <div class={twMerge('form-control')}>
+      <select
+        value={currentLocale.value}
+        onChange$={async ({ target: { value } }) =>
+          await changeLocale(
+            supportedLocales.find(({ lang }) => lang === value)!,
+            ctx
+          )
+        }
+        class={twMerge('select w-full max-w-xs', 'pr-8')}
+      >
+        {ctx.config.supportedLocales.map(({ lang }) => (
+          <option
+            value={lang}
+            selected={currentLocale.value === lang}
+            key={lang}
+          >
+            {lang}
+          </option>
+        ))}
+      </select>
+    </div>
   )
 })
