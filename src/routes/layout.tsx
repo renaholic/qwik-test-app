@@ -113,7 +113,7 @@ export default component$(() => {
         </div>
       </div>
       <main>
-        <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div class="container max-w-7xl lg:px-8 px-6 pb-16">
           <Slot />
         </div>
       </main>
