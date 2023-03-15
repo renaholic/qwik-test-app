@@ -33,9 +33,12 @@ export const SelectField = ({
   ...props
 }: QwikIntrinsicElements['select'] & { label?: string }) => {
   return (
-    <div class={className}>
+    <div class={twMerge('form-control', className)}>
       {label && <Label>{label}</Label>}
-      <select class={twMerge(formClasses, 'pr-8')} {...props} />
+      <select
+        class={twMerge('select w-full max-w-xs', formClasses, 'pr-8')}
+        {...props}
+      />
     </div>
   )
 }
