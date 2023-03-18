@@ -1,8 +1,9 @@
-import { component$, Slot } from '@builder.io/qwik'
+import { component$, Slot, useErrorBoundary } from '@builder.io/qwik'
 import { LinkProps, RequestHandler, useNavigate } from '@builder.io/qwik-city'
 import { ChangeLocale } from '../components/header/change-locale'
 import { ThemeSelector } from '../components/ThemeSelector'
 import { config } from '../speak-config'
+import { useOnline } from './useOnline'
 
 export const menu = [
   { name: 'Home', href: '/' },
@@ -41,6 +42,8 @@ export default component$(() => {
   // const isCurrent = (href: string) => pathname === href
 
   // const pageState = useContext<PageState>(pageContext)
+
+  useOnline()
 
   return (
     <div class="min-h-full w-full overflow-hidden">
