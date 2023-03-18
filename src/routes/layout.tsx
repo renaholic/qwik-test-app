@@ -1,4 +1,4 @@
-import { component$, Slot, useErrorBoundary } from '@builder.io/qwik'
+import { component$, Slot } from '@builder.io/qwik'
 import { LinkProps, RequestHandler, useNavigate } from '@builder.io/qwik-city'
 import { ChangeLocale } from '../components/header/change-locale'
 import { ThemeSelector } from '../components/ThemeSelector'

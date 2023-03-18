@@ -12,7 +12,6 @@ import { Gesture } from '@use-gesture/vanilla'
 import anime from 'animejs'
 import _ from 'lodash'
 import { Speak } from 'qwik-speak'
-import { twMerge } from 'tailwind-merge'
 import Toastify from 'toastify-js'
 import { usePageContext } from '../../root'
 
@@ -22,7 +21,7 @@ export const SwipeableComponent = component$<{
   onSwipeUp?: QRL<(ev: Event) => void>
   onSwipeDown?: QRL<(ev: Event) => void>
   url: string
-}>(({ onSwipeLeft, onSwipeRight, onSwipeUp, onSwipeDown, url }) => {
+}>(({ onSwipeLeft, onSwipeRight, url }) => {
   const imgElement = useSignal<HTMLImageElement>()
 
   const isGone = useSignal(false)
@@ -39,7 +38,7 @@ export const SwipeableComponent = component$<{
           active: isActive,
           movement: [mx, my],
           direction: [xDir],
-          velocity: [vx, vy],
+          velocity: [vx],
           last: isLast,
           event,
         }) => {
@@ -112,7 +111,7 @@ export default component$(() => {
     }
   })
 
-  const handleSwipeLeft = $((index: number) => {
+  const handleSwipeLeft = $(() => {
     Toastify({
       text: 'swipe left',
       position: 'left',
@@ -120,7 +119,7 @@ export default component$(() => {
     images.imagesURL = _.drop(images.imagesURL)
   })
 
-  const handleSwipeRight = $((index: number) => {
+  const handleSwipeRight = $(() => {
     Toastify({
       text: 'swipe right',
       position: 'right',
@@ -133,10 +132,10 @@ export default component$(() => {
     $((ev) => {
       const event = ev as KeyboardEvent
       if (event.key === 'ArrowLeft') {
-        handleSwipeLeft(0)
+        handleSwipeLeft()
       }
       if (event.key === 'ArrowRight') {
-        handleSwipeRight(0)
+        handleSwipeRight()
       }
     })
   )
@@ -158,20 +157,20 @@ export default component$(() => {
           </a>
         </div>
         <div class="stack mx-auto transition-transform">
-          {images.imagesURL.map((url, index) => (
+          {images.imagesURL.map((url) => (
             <SwipeableComponent
               key={url}
-              onSwipeLeft={$(() => handleSwipeLeft(index))}
-              onSwipeRight={$(() => handleSwipeRight(index))}
+              onSwipeLeft={handleSwipeLeft}
+              onSwipeRight={handleSwipeRight}
               url={url}
             />
           ))}
         </div>
         <div class="flex w-full justify-center gap-12 py-12">
-          <kbd class="kbd" onClick$={() => handleSwipeLeft(0)}>
+          <kbd class="kbd" onClick$={handleSwipeLeft}>
             ◀︎
           </kbd>
-          <kbd class="kbd" onClick$={() => handleSwipeRight(0)}>
+          <kbd class="kbd" onClick$={handleSwipeRight}>
             ▶︎
           </kbd>
         </div>
