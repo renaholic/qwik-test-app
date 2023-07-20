@@ -1,9 +1,10 @@
-import { component$ } from '@builder.io/qwik'
+import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik'
 import type { DocumentHead } from '@builder.io/qwik-city'
 import { $translate as t, Speak } from 'qwik-speak'
 import { TypedComponent } from '../components/TypedComponent'
 import { usePageContext } from '../root'
 import MotionOne from '~/integrations/motionOne'
+import { D3 } from '~/integrations/D3'
 
 export const Home = component$(() => {
   usePageContext('Home')
@@ -21,6 +22,7 @@ export const Home = component$(() => {
           t('home.typed_2@@I go to school on train.'),
         ]}
       />
+      <D3 />
 
       <MotionOne />
     </div>
