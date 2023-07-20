@@ -1,3 +1,9 @@
+# Animation
+[Motion One](https://motion.dev/) will be used to handle component transition
+
+[View Transitions API](https://developer.chrome.com/docs/web-platform/view-transitions/) will be used between page transition
+
+
 # Tested Library / Functionality
 ## UI
 - [x] Tailwind

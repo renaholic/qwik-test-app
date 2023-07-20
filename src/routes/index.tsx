@@ -3,6 +3,7 @@ import type { DocumentHead } from '@builder.io/qwik-city'
 import { $translate as t, Speak } from 'qwik-speak'
 import { TypedComponent } from '../components/TypedComponent'
 import { usePageContext } from '../root'
+import MotionOne from '~/integrations/motionOne'
 
 export const Home = component$(() => {
   usePageContext('Home')
@@ -21,19 +22,7 @@ export const Home = component$(() => {
         ]}
       />
 
-      {/* <div class="flex flex-col gap-3">
-        <Link class="mindblow" href="/flower">
-          Blow my mind 🤯
-        </Link>
-
-        <Link class="mindblow" href="/yt-playback">
-          Youtube Playback Calculator
-        </Link>
-
-        <Link class="mindblow" href="/login">
-          Login
-        </Link>
-      </div> */}
+      <MotionOne />
     </div>
   )
 })
