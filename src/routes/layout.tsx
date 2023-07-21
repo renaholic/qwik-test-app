@@ -50,7 +50,7 @@ export default component$(() => {
     <div class="min-h-full w-full overflow-hidden">
       <div class="drawer">
         <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-        <div class="drawer-content">
+        <div class="drawer-content flex flex-col">
           {/* <!-- Page content here --> */}
           <div class="navbar bg-base-100" id="nav">
             <div class="navbar-start">
@@ -102,10 +102,8 @@ export default component$(() => {
               <ThemeSelector class="relative z-10 h-6 w-6" />
             </div>
           </div>
-          <main>
-            <div class="container max-w-7xl px-6 pb-16 lg:px-8">
-              <Slot />
-            </div>
+          <main class="container max-w-7xl px-6 pb-16 lg:px-8 flex flex-grow ">
+            <Slot />
           </main>
         </div>
         <div class="drawer-side">
