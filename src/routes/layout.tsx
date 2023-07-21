@@ -10,6 +10,7 @@ export const menu = [
   { name: 'Flower', href: '/flower/' },
   { name: 'Youtube Player', href: '/yt-playback/' },
   { name: 'Swipe', href: '/swipe/' },
+  { name: 'D3 Force Graph', href: '/d3-force/' },
 ]
 export const Link = component$<LinkProps>(({ href, ...props }) => {
   const nav = useNavigate()
