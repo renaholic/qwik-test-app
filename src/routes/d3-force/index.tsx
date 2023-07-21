@@ -75,6 +75,16 @@ function createGraph(container: HTMLDivElement | undefined) {
     .attr('viewBox', [-width / 2, -height / 2, width, height])
     .attr('style', 'max-width: 100%; max-height: 100%;')
 
+  d3.select(window).on('resize', () => {
+    const width = container.clientWidth
+    const height = container.clientHeight
+
+    svg
+      .attr('width', width)
+      .attr('height', height)
+      .attr('viewBox', [-width / 2, -height / 2, width, height])
+  })
+
   // Add a line for each link, and a circle for each node.
   const link = svg
     .append('g')
@@ -163,5 +173,5 @@ export default component$(() => {
     cleanup(() => destroy())
   })
 
-  return <div ref={containerRef} class={'flex-grow w-full'} />
+  return <div ref={containerRef} class={'w-full flex-grow'} />
 })
