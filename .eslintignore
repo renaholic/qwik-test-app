@@ -1,7 +1,6 @@
 **/*.log
 **/.DS_Store
 *.
-.vscode/settings.json
 .history
 .yarn
 bazel-*
@@ -24,7 +23,6 @@ output
 rollup.config.js
 build
 .cache
-.vscode
 .rollup.cache
 dist
 tsconfig.tsbuildinfo
