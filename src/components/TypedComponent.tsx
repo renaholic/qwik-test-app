@@ -1,7 +1,7 @@
 import {
   Component,
   component$,
-  useBrowserVisibleTask$,
+  useVisibleTask$,
   useSignal,
 } from '@builder.io/qwik'
 import Typed from 'typed.js'
@@ -11,7 +11,7 @@ export const TypedComponent: Component<{
 }> = component$(({ strings = [] }) => {
   const ref = useSignal<HTMLSpanElement>()
 
-  useBrowserVisibleTask$(() => {
+  useVisibleTask$(() => {
     if (!ref.value) return
     const typed = new Typed(ref.value, {
       strings,

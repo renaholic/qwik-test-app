@@ -10,9 +10,18 @@
  * - npm run build
  *
  */
-import { renderToStream, RenderToStreamOptions } from '@builder.io/qwik/server';
+import { RenderOptions, renderToStream, RenderToStreamOptions } from '@builder.io/qwik/server';
 import { manifest } from '@qwik-client-manifest';
 import Root from './root';
+import { isDev } from '@builder.io/qwik/build';
+
+export function extractBase({ serverData }: RenderOptions): string {
+  if (!isDev && serverData?.locale) {
+    return '/build/' + serverData.locale;
+  } else {
+    return '/build';
+  }
+}
 
 export default function (opts: RenderToStreamOptions) {
   return renderToStream(<Root />, {
@@ -25,5 +34,7 @@ export default function (opts: RenderToStreamOptions) {
         prefetchEvent: 'always',
       },
     },
+    base: extractBase
   });
 }
+

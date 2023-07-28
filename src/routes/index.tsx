@@ -1,13 +1,23 @@
-import { component$, useSignal, useVisibleTask$ } from '@builder.io/qwik'
-import type { DocumentHead } from '@builder.io/qwik-city'
-import { $translate as t, Speak } from 'qwik-speak'
-import { TypedComponent } from '../components/TypedComponent'
-import { usePageContext } from '../root'
-import MotionOne from '~/integrations/motionOne'
-import { D3 } from '~/integrations/D3'
+import { component$ } from '@builder.io/qwik';
+import type { DocumentHead } from '@builder.io/qwik-city';
+import {
+  Speak,
+  useTranslate
+} from 'qwik-speak';
+import { D3 } from '~/integrations/D3';
+import MotionOne from '~/integrations/motionOne';
+import { TypedComponent } from '../components/TypedComponent';
+import { usePageContext } from '../root';
 
 export const Home = component$(() => {
   usePageContext('Home')
+
+  const t = useTranslate();
+
+  const strings = [
+    t('home.typed_1@@I go to school by bus.'),
+    t('home.typed_2@@I go to school on train.'),
+  ]
 
   return (
     <div>
@@ -17,10 +27,7 @@ export const Home = component$(() => {
       </h1>
 
       <TypedComponent
-        strings={[
-          t('home.typed_1@@I go to school by bus.'),
-          t('home.typed_2@@I go to school on train.'),
-        ]}
+        strings={strings}
       />
       <D3 />
 

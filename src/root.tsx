@@ -1,41 +1,43 @@
 import {
   $,
   component$,
-  createContext,
-  useClientEffect$,
+  createContextId,
   useContext,
   useContextProvider,
   useOnWindow,
   useStore,
-  useVisibleTask$,
-} from '@builder.io/qwik'
+  useTask$,
+  useVisibleTask$
+} from '@builder.io/qwik';
 import {
   QwikCityProvider,
   RouterOutlet,
   ServiceWorkerRegister,
-} from '@builder.io/qwik-city'
-import { QwikSpeak } from 'qwik-speak'
-import { RouterHead } from './components/router-head/router-head'
-import './global.css'
+} from '@builder.io/qwik-city';
 
+import { RouterHead } from './components/router-head/router-head';
+import './global.css';
+import { config } from './speak-config';
+import { translationFn } from './speak-functions';
+
+import { QwikSpeakProvider } from 'qwik-speak';
 import {
   colorSchemeChangeListener,
   getColorPreference,
   setPreference,
-} from './components/ThemeToggle/ThemeToggle'
-import { GlobalStore, SiteStore } from './context'
-import { config, translationFn } from './speak-config'
+} from './components/ThemeToggle/ThemeToggle';
+import { GlobalStore, SiteStore } from './context';
 
 export interface PageState {
   pageName: string
 }
 
-export const pageContext = createContext<PageState>('page-context')
+export const pageContext = createContextId<PageState>('page-context')
 
 export const usePageContext = (pageName: string) => {
   const page = useContext<PageState>(pageContext)
 
-  useClientEffect$(() => {
+  useTask$(() => {
     page.pageName = pageName
   })
 }
@@ -96,7 +98,7 @@ export default component$(() => {
     //   </body>
     // </QwikCity>
 
-    <QwikSpeak config={config} translationFn={translationFn}>
+    <QwikSpeakProvider  config={config} translationFn={translationFn}>
       <QwikCityProvider>
         <head>
           {/* <QwikPartytown forward={['dataLayer.push']} /> */}
@@ -121,6 +123,6 @@ export default component$(() => {
           <ServiceWorkerRegister />
         </body>
       </QwikCityProvider>
-    </QwikSpeak>
+    </QwikSpeakProvider >
   )
 })

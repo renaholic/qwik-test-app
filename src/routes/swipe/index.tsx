@@ -2,7 +2,7 @@ import {
   $,
   component$,
   QRL,
-  useBrowserVisibleTask$,
+  useVisibleTask$,
   useOnDocument,
   useSignal,
   useStore,
@@ -26,7 +26,7 @@ export const SwipeableComponent = component$<{
 
   const isGone = useSignal(false)
 
-  useBrowserVisibleTask$(async ({ track }) => {
+  useVisibleTask$(async ({ track }) => {
     track(() => imgElement.value)
 
     if (!imgElement.value) return
@@ -103,7 +103,7 @@ export default component$(() => {
     { deep: true }
   )
 
-  useBrowserVisibleTask$(async ({ track }) => {
+  useVisibleTask$(async ({ track }) => {
     track(() => images.imagesURL.length)
 
     if (images.imagesURL.length < images.maxLength) {
