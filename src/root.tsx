@@ -7,6 +7,7 @@ import {
   useContextProvider,
   useOnWindow,
   useStore,
+  useVisibleTask$,
 } from '@builder.io/qwik'
 import {
   QwikCityProvider,
@@ -16,7 +17,13 @@ import {
 import { QwikSpeak } from 'qwik-speak'
 import { RouterHead } from './components/router-head/router-head'
 import './global.css'
-import 'toastify-js/src/toastify.css'
+
+import {
+  colorSchemeChangeListener,
+  getColorPreference,
+  setPreference,
+} from './components/ThemeToggle/ThemeToggle'
+import { GlobalStore, SiteStore } from './context'
 import { config, translationFn } from './speak-config'
 
 export interface PageState {
@@ -61,6 +68,21 @@ export default component$(() => {
   )
 
   useContextProvider(pageContext, pageState)
+
+  const store = useStore<SiteStore>({
+    headerMenuOpen: false,
+    sideMenuOpen: false,
+    theme: 'auto',
+  })
+
+  useContextProvider(GlobalStore, store)
+  useVisibleTask$(() => {
+    store.theme = getColorPreference()
+    return colorSchemeChangeListener((isDark) => {
+      store.theme = isDark ? 'dark' : 'light'
+      setPreference(store.theme)
+    })
+  })
 
   return (
     // <QwikCity>

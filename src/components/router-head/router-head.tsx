@@ -1,12 +1,13 @@
-import { component$ } from '@builder.io/qwik';
-import { useDocumentHead, useLocation } from '@builder.io/qwik-city';
+import { component$ } from '@builder.io/qwik'
+import { useDocumentHead, useLocation } from '@builder.io/qwik-city'
+import { ThemeScript } from '../ThemeToggle/theme-script'
 
 /**
  * The RouterHead component is placed inside of the document `<head>` element.
  */
 export const RouterHead = component$(() => {
-  const head = useDocumentHead();
-  const loc = useLocation();
+  const head = useDocumentHead()
+  const loc = useLocation()
 
   return (
     <>
@@ -22,6 +23,8 @@ export const RouterHead = component$(() => {
         href="https://fonts.googleapis.com/css2?family=Poppins&amp;display=swap"
         rel="stylesheet"
       />
+
+      <ThemeScript />
 
       <meta property="og:site_name" content="Qwik" />
       <meta name="twitter:site" content="@QwikDev" />
@@ -39,5 +42,5 @@ export const RouterHead = component$(() => {
         <style {...s.props} dangerouslySetInnerHTML={s.style} />
       ))}
     </>
-  );
-});
+  )
+})

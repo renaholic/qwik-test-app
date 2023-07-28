@@ -1,9 +1,8 @@
 module.exports = {
   plugins: {
-    tailwindcss: {},
-    'postcss-focus-visible': {
-      replaceWith: '[data-focus-visible-added]',
-    },
+    'postcss-import': {},
+    'tailwindcss/nesting': 'postcss-nesting',
     autoprefixer: {},
+    tailwindcss: {},
   },
 }
